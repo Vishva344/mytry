@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Local Storage CRUD</title>
+</head>
+<body>
+  <form id="myForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age"><br><br>
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city"><br><br>
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state"><br><br>
+    <button type="submit" id="saveButton">Save</button>
+    <button type="button" id="clearButton">Clear</button>
+  </form>
+
+  <table id="entityTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="entityTableBody">
+    </tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
