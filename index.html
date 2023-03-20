@@ -1,57 +1,65 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>CRUD Operations on LocalStorage</title>
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head> 
-<body>
-	<div class="container">
-		<h1>CRUD Operations on LocalStorage</h1>
-		<form>
-			<div class="form-group">
-				<label for="id">ID</label>
-				<input type="text" class="form-control" id="id" readonly>
-			</div>
-			<div class="form-group">
-				<label for="name">Name</label>
-				<input type="text" class="form-control" id="name">
-			</div>
-			<div class="form-group">
-				<label for="price">Price</label>
-				<input type="text" class="form-control" id="price">
-			</div>
-			<button type="button" class="btn btn-primary" onclick="save()">Save</button>
-			<button type="button" class="btn btn-danger" onclick="remove()">Delete</button>
-			<button type="button" class="btn btn-default" onclick="clearData()">Clear</button>
-		</form>
-		<br>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Price</th>
-                    
-				</tr>
-			</thead>
-			<tbody id="tableBody"></tbody>
-			<tfoot>
-				<tr>
-					<td colspan="2">Total:</td>
-					<td id="total"></td>
-				</tr>
-			</tfoot>
-		</table>
-	</div>
-	<script>
-        // Retrieve data from LocalStorage and display in table
-function allData() {
-    var data = JSON.parse(localStorage.getItem("data"));
-    var tableBody = document.getElementById("tableBody");
-    var total = 0;
-    tableBody.innerHTML = "";
-    if (data) {
-        for (var i = 0; i < data.length; i++) {
+  <head>
+    <title>CRUD Operations on LocalStorage 1</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>CRUD Operations on LocalStorage</h1>
+      <form>
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input type="text" class="form-control" id="id" readonly />
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" />
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="text" class="form-control" id="price" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="save()">
+          Save
+        </button>
+        <button type="button" class="btn btn-danger" onclick="remove()">
+          Delete
+        </button>
+        <button type="button" class="btn btn-default" onclick="clearData()">
+          Clear
+        </button>
+      </form>
+      <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Total:</td>
+            <td id="total"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <script>
+      // Retrieve data from LocalStorage and display in table
+      function allData() {
+        var data = JSON.parse(localStorage.getItem("data"));
+        var tableBody = document.getElementById("tableBody");
+        var total = 0;
+        tableBody.innerHTML = "";
+        if (data) {
+          for (var i = 0; i < data.length; i++) {
             var row = tableBody.insertRow();
             var id = row.insertCell(0);
             var name = row.insertCell(1);
@@ -60,80 +68,78 @@ function allData() {
             name.innerHTML = data[i].name;
             price.innerHTML = data[i].price;
             total += parseInt(data[i].price);
-            row.onclick = function(){
-                find(this);
+            row.onclick = function () {
+              find(this);
             };
+          }
         }
-    }
-    document.getElementById("total").innerHTML = total;
-}
+        document.getElementById("total").innerHTML = total;
+      }
 
-// Save data to LocalStorage
-function save() {
-    var id = document.getElementById("id").value;
-    var name = document.getElementById("name").value;
-    var price = document.getElementById("price").value;
-    var data = JSON.parse(localStorage.getItem("data"));
-    if (!data) {
-        data = [];
-    }
-    if (id) {
-        for (var i = 0; i < data.length; i++) {
+      // Save data to LocalStorage
+      function save() {
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var price = document.getElementById("price").value;
+        var data = JSON.parse(localStorage.getItem("data"));
+        if (!data) {
+          data = [];
+        }
+        if (id) {
+          for (var i = 0; i < data.length; i++) {
             if (data[i].id == id) {
-                data[i].name = name;
-                data[i].price = price;
-                break;
+              data[i].name = name;
+              data[i].price = price;
+              break;
             }
+          }
+        } else {
+          var lastId = data.length ? data[data.length - 1].id : 0;
+          data.push({ id: lastId + 1, name: name, price: price });
         }
-    } else {
-        var lastId = data.length ? data[data.length - 1].id : 0;
-        data.push({id: lastId + 1    , name: name, price: price});
-}
-localStorage.setItem("data", JSON.stringify(data));
-clearForm();
-allData();
-}
+        localStorage.setItem("data", JSON.stringify(data));
+        clearForm();
+        allData();
+      }
 
-// Remove data from LocalStorage
-function remove() {
-var id = document.getElementById("id").value;
-var data = JSON.parse(localStorage.getItem("data"));
-for (var i = 0; i < data.length; i++) {
-if (data[i].id == id) {
-data.splice(i, 1);
-break;
-}
-}
-localStorage.setItem("data", JSON.stringify(data));
-clearForm();
-allData();
-}
-// Clear form
-function clearForm() {
-document.getElementById("id").value = "";
-document.getElementById("name").value = "";
-document.getElementById("price").value = "";
-}
+      // Remove data from LocalStorage
+      function remove() {
+        var id = document.getElementById("id").value;
+        var data = JSON.parse(localStorage.getItem("data"));
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].id == id) {
+            data.splice(i, 1);
+            break;
+          }
+        }
+        localStorage.setItem("data", JSON.stringify(data));
+        clearForm();
+        allData();
+      }
+      // Clear form
+      function clearForm() {
+        document.getElementById("id").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("price").value = "";
+      }
 
-// Clear LocalStorage
-function clearData() {
-localStorage.clear();
-clearForm();
-allData();
-}
-// Find data by clicking on table row
-function find(row) {
-var id = row.cells[0].innerHTML;
-var name = row.cells[1].innerHTML;
-var price = row.cells[2].innerHTML;
-document.getElementById("id").value = id;
-document.getElementById("name").value = name;
-document.getElementById("price").value = price;
-}
+      // Clear LocalStorage
+      function clearData() {
+        localStorage.clear();
+        clearForm();
+        allData();
+      }
+      // Find data by clicking on table row
+      function find(row) {
+        var id = row.cells[0].innerHTML;
+        var name = row.cells[1].innerHTML;
+        var price = row.cells[2].innerHTML;
+        document.getElementById("id").value = id;
+        document.getElementById("name").value = name;
+        document.getElementById("price").value = price;
+      }
 
-allData(); // Display data on page load
-
-
+      allData(); // Display data on page load
     </script>
-</body>
+  </body>
 </html>
